@@ -1,0 +1,476 @@
+<!doctype html>
+<html>
+<head lang="en">
+	<meta charset="utf-8">
+	<title>jQuery Image Crop - w3bees.com</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/imgareaselect-animated.css')}}" />
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/change.css')}}" />
+	<link href="{{url_for('static', filename='font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+    
+    <!-- Bootstrap Core CSS -->
+    <link href="{{url_for('static', filename='css/bootstrap.css')}}" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link href="{{url_for('static', filename='css/stylish-portfolio.css')}}" rel="stylesheet">
+
+    <!-- jQuery -->
+	<!-- scripts -->
+	<!-- // <script src="{{url_for('static', filename='js/jquery.js')}}"></script> -->
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/jquery.imgareaselect.pack.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/script.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/attrchange.js')}}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap-filestyle.js')}}"></script>
+
+
+	<style>
+		.btn-file {
+		    position: relative;
+		    overflow: hidden;
+		}
+		.btn-file input[type=file] {
+		    position: absolute;
+		    top: 0;
+		    right: 0;
+		    width: 100px;
+		    height: 50px;
+		    min-width: 100%;
+		    min-height: 100%;
+		    font-size: 100px;
+		    text-align: right;
+		    filter: alpha(opacity=0);
+		    opacity: 0;
+		    outline: none;
+		    background: white;
+		    cursor: inherit;
+		    display: block;
+		}
+    	body{
+    		/*color: #582A00;*/
+    		padding-left: 5px;
+    		padding-right: 5px;
+    		background: #E7EDEE;
+    	}
+    	img#uploadPreview{
+    		border: 0;
+    		border-radius: 3px;
+    		-webkit-box-shadow: 0px 2px 7px 0px rgba(0, 0, 0, .27);
+    		box-shadow: 0px 2px 7px 0px rgba(0, 0, 0, .27);
+    		margin-bottom: 30px;
+    		overflow: hidden;
+    	}
+    	input[type="submit"]{
+    		border-radius: 10px;
+    		background-color: #61B3DE;
+    		border: 0;
+    		color: white;
+    		font-weight: bold;
+    		font-style: italic;
+    		padding: 6px 15px 5px;
+    		cursor: pointer;
+    	}
+    	ul {         
+            padding:0 0 0 0;
+            margin:0 0 0 0;
+        }
+        ul li {     
+            list-style:none;
+            margin-bottom:25px;           
+        }
+        ul li img {
+            cursor: pointer;
+        }
+	</style>
+
+
+
+
+
+	<script type="text/javascript">
+		function preview(img, selection)
+		{
+
+			if (!selection.width || !selection.height)
+				return;
+			
+			var scaleX = 300 / selection.width;
+			var scaleY = 300 / selection.height;
+			var cursrc = $($('#uploadPreview')).attr('src');
+			$('#uploadPreviewSmall').attr('src', cursrc);
+
+			$('#preview img').css(
+			{
+				width: Math.round(scaleX * $('#uploadPreview').width()),
+				height: Math.round(scaleY * $('#uploadPreview').height()),
+				marginLeft: -Math.round(scaleX * selection.x1),
+				marginTop: -Math.round(scaleY * selection.y1)
+			});
+			
+			$('#x').val(selection.x1);
+			$('#y').val(selection.y1);
+			$('#w').val(selection.width);
+			$('#h').val(selection.height);    
+		}
+
+		$(function ()
+		{
+			$('#uploadPreview').imgAreaSelect(
+			{
+				aspectRatio: '1:1',
+				handles: true,
+				fadeSpeed: 200,
+				onSelectChange: preview
+			});
+		});
+
+	</script>
+    <link href='http://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+</head>
+<body>
+
+	<nav class="navbar navbar-default" style="background-color:#008AB8;">
+	    <div class="container-fluid">
+	        <!-- Brand and toggle get grouped for better mobile display -->
+	        <div class="navbar-header">
+	            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	                <span class="sr-only">Toggle navigation</span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	            </button>
+	            <a class="navbar-brand" href="/" style="color:#fff;font-size:36px;font-family:Indie Flower;"><strong>UniGram</strong></a>
+	        </div>
+	        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">	            
+	        </div>
+	    </div>
+	</nav>
+
+    <div class = "row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4" style="text-align:center;" id="pricepaste">
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
+    <br/><br/>
+
+	<!-- image preview area-->
+	<div class="row">
+        <div class="col-md-1"></div>
+		<div class="col-md-6" align="center">
+			<div class="" style="padding-left:30px;padding-right:30px;">
+				<img id="uploadPreview" style="width:100%;" src=""/>
+			</div>
+		</div>
+		<div class="col-md-4" align="center">
+			<div class="photo" style="">
+				<div class="topBlock">
+					<div class="photoBlock" id="preview" style="overflow:hidden;width:300px;height:300px;">
+						<img id="uploadPreviewSmall" style="width: 546px; height: 409px; margin-left: -64px; margin-top: -34px;" src="">
+					</div>
+
+				</div>
+				<div class="bottomBlock">
+					<div class="textBlock">
+						<input class="userBlock" style="width:100%" id="comment" placeholder="Подпись к фото" type="text">
+						<div class="labelBlock">UniGram.ru</div>
+					</div>
+				</div>
+			</div>
+
+			<form class="form" style="padding-top:10px;" action="upload" id="uploadform" method="post" enctype="multipart/form-data" target="hidden-form">
+                <div class="form-group">
+                    <label>Количество копий</label>
+                    <div style="width:100px;font-size:21pt;text-align:center;">
+                        <i class="fa fa-arrow-left" id="PreviewRemove" title="-1 фото"></i>
+                        <span id="PreviewCount">1</span>
+                        <i class="fa fa-arrow-right" id="PreviewAdd" title="+1 фото"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+					<span class="btn btn-default btn-file" style="width:320px;">
+					    Загрузить фотографию <i class="fa fa-upload"></i> <input id="uploadImage" type="file" name="image" >
+					</span>
+                </div>
+                <div class="form-group">
+					<input type="submit" class="btn btn-lg btn-light" style="width:320px;" disabled="disabled" id="SubmitPhoto" value="Добавить">
+				</div>
+				<!-- hidden inputs -->
+				<input type="hidden" class="form-control col-sm-12" id="desc" name="desc">
+				<input class="form-group" type="hidden" id="cnt" name="cnt" value="1" />
+                <input class="form-group" type="hidden" id="x" name="x" />
+				<input class="form-group" type="hidden" id="y" name="y" />
+				<input class="form-group" type="hidden" id="w" name="w" />
+				<input class="form-group" type="hidden" id="h" name="h" />
+				<input class="form-group" type="hidden" id="coolwidth" name="coolwidth" />
+			</form>
+            <IFRAME style="display:none" name="hidden-form" id="hidden-form"></IFRAME>  
+		</div>
+        <div class="col-md-1"></div>
+	</div>
+		
+
+	<div id="portfoliopaste"></div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog" style="width:380px;">
+	    	<div class="modal-content">         
+	        	<div class="modal-body">                
+	         	</div>
+	        </div>
+	    </div>
+	</div>
+
+	<section id="makeorder" class="services bg-primary">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <h2>Оформить заказ</h2>
+                    <hr class="small">
+                    <div class="row">
+                    	
+                    	<form class="col-sm-6" action="makeorder" id="OrderForm" method="post" enctype="multipart/form-data">
+						    <div class="form-group">
+						        <label for="OrderName">Имя</label>
+						        <input type="text" class="form-control" id="OrderName" name="OrderName" placeholder="Аня">
+						    </div>
+						    <div class="form-group">
+						        <label for="OrderPhone">Телефон</label>
+						        <input type="text" class="form-control" id="OrderPhone" name="OrderPhone" placeholder="+79262100591">
+						    </div>
+						    <div class="form-group">
+						        <label for="OrderAddress">Адрес доставки</label>
+						        <textarea class="form-control" rows="3" id="OrderAddress" name="OrderAddress" placeholder="Общежитие ГЗ, 1482"></textarea>
+						    </div>
+						    <div class="form-group">
+						        <label for="OrderComment">Комментарии по доставке</label>
+						        <textarea class="form-control" rows="3" id="OrderComment" name="OrderComment" placeholder="С 16.00 до 18.00 в будний день."></textarea>
+						    </div>
+						    <button type="submit" class="btn btn-default">Оформить</button>
+						</form>
+
+						<div class="col-sm-6">
+			                <div class="row" id="miniportfoliopaste">
+
+			                </div>
+			            </div>
+					</div>
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+	<script type="text/javascript">
+
+		$("#desc").bind("change paste keyup", function() {
+		   $("#comment").text($(this).val());
+		});
+
+		$('#uploadform').submit(function() {
+		    $('#coolwidth').val($('#uploadPreview').width());
+		    $('#desc').val($('#comment').val());
+		    return true;
+		});
+
+		var src = $('#uploadPreviewSmall').attr('src');
+	    $('#uploadPreview').attrchange({
+	        callback: function (e) {
+	            var cursrc = $(this).attr('src');
+	            if (src !== cursrc) {
+                    if (cursrc !== "/static/img/default.jpg")
+                        $('#SubmitPhoto').removeAttr('disabled');
+	                src = cursrc;
+	            }            
+	        }
+	    });
+
+    	$(document).ready(function(){
+    		$('#uploadPreview').attr('src', "{{url_for('static', filename='img/default.jpg')}}");
+    		$('#uploadPreviewSmall').attr('src', "{{url_for('static', filename='img/pending.png')}}");
+    		$('#uploadPreviewSmall').attr('style', '');
+          
+        //      $('li img').on('click',function(){
+        //        		return;
+
+
+        //             var src = $(this).attr('src');
+        //             console.log('#' + $(this).attr('name'));
+        //             console.log($('#' + $(this).attr('name')));
+        //             var img = '\
+        //             <div style="width:100%">\
+    	   //             	<div style="display: inline-block; width: 360px;">\
+    				// 		<div class="photo">\
+    				// 			<div class="topBlock">\
+    				// 				<div class="photoBlock">\
+    				// 					<img id="modalPhoto" src="' + src + '"></div>\
+    				// 			</div>\
+    				// 			<div class="bottomBlock">\
+    				// 				<div class="textBlock">\
+    				// 					<div id="curtext" class="userBlock">' + $('#' + $(this).attr('name')).text() + '</div>\
+    				// 					<div class="labelBlock">UniGram.ru</div>\
+    				// 				</div>\
+    				// 			</div>\
+    				// 		</div>\
+    				// 	</div>\
+    				// </div>\
+    				// ';
+        //             // var img = '<img src="' + src + '" class="img-responsive"/><p text-align="right">123</p>';
+        //             $('#myModal').modal();
+        //             $('#myModal').on('shown.bs.modal', function(){
+        //                 $('#myModal .modal-body').html(img);
+        //             });
+        //             $('#myModal').on('hidden.bs.modal', function(){
+        //                 $('#myModal .modal-body').html('');
+        //             });
+        //        });  
+        })
+    
+
+    // Closes the sidebar menu
+    $("#menu-close").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Opens the sidebar menu
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Scrolls to the selected menu item on the page
+    $(function() {
+        $('a[href*=#]:not([href=#])').click(function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+    });
+
+    $("#PreviewAdd").click(function() {
+        $("#PreviewCount").text(parseInt($("#PreviewCount").text()) + 1);
+        $("#cnt").val($("#PreviewCount").text());
+    });
+
+
+    $("#PreviewRemove").click(function() {
+        if ($("#PreviewCount").text() > 1)
+        {
+            $("#PreviewCount").text(parseInt($("#PreviewCount").text()) - 1);
+            $("#cnt").val($("#PreviewCount").text());
+        }
+    });
+
+    function addImgAreaSelect( img ){
+        img.addClass( 'imgAreaSelect' ).imgAreaSelect({
+                handles : true,
+                aspectRatio : '1:1',
+                fadeSpeed : 1,
+                show : true,
+                fadeSpeed: 200,
+                onSelectChange: preview
+        });
+        img.load(function(){ // display initial image selection 16:9
+                var width = Math.min(this.height, this.width) / 3 * 2;
+                var height = width;
+                var diffh = ( this.height - height ) / 2;
+                var diffw = ( this.width - width ) / 2;
+                var coords = { x1 : 0, y1 : 0, x2 : width, y2: height, width: width, height: height };
+                $( this ).imgAreaSelect( coords );
+                preview($("#uploadPreview"), coords);
+        });
+    }
+
+    addImgAreaSelect($("#uploadPreview"));
+
+
+    var last_portfolio = '';
+    function portfolio(){
+        
+        var xmlHttp = null;
+
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", 'getportfolio', false );
+        xmlHttp.send( null );
+
+        if (xmlHttp.responseText !== last_portfolio)
+        {
+            $("#portfoliopaste").html(xmlHttp.responseText);
+            console.log(xmlHttp.responseText);
+            last_portfolio = xmlHttp.responseText;
+        }
+        
+    }
+    portfolio();
+    window.setInterval(function(){
+      portfolio();
+    }, 1000);
+
+    var last_price = '';
+    function price(){
+        
+        var xmlHttp = null;
+
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", 'getprice', false );
+        xmlHttp.send( null );
+
+        if (xmlHttp.responseText !== last_price)
+        {
+
+            $("#pricepaste").html(xmlHttp.responseText);
+            console.log(xmlHttp.responseText);
+            if (last_price == '' || xmlHttp.responseText == '')
+            {
+                addImgAreaSelect($("#uploadPreview"));
+            }
+            last_price = xmlHttp.responseText;
+        }
+        
+    }
+    price();
+    window.setInterval(function(){
+      price();
+    }, 1000);
+
+
+    var last_miniportfolio = '';
+    function miniportfolio(){
+        
+
+        var xmlHttp = null;
+
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", 'getminiportfolio', false );
+        xmlHttp.send( null );
+
+        if (xmlHttp.responseText !== last_miniportfolio)
+        {
+            $("#miniportfoliopaste").html(xmlHttp.responseText);
+            console.log(xmlHttp.responseText);
+            last_miniportfolio = xmlHttp.responseText;
+        }
+        
+    }
+    miniportfolio();
+    window.setInterval(function(){
+      miniportfolio();
+    }, 1000);
+
+    </script>
+
+</body>
+</html>
